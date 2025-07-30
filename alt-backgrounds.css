@@ -1,0 +1,77 @@
+/* Alternative Background Options - Copy any of these to replace the main background in styles.css */
+
+/* Option 1: Soft Forest Path */
+.alt-bg-1 {
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+}
+
+/* Option 2: Mountain Lake */
+.alt-bg-2 {
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+}
+
+/* Option 3: Soft Meadow */
+.alt-bg-3 {
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+}
+
+/* Option 4: Misty Forest */
+.alt-bg-4 {
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1418489098061-ce87b5dc3aee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+}
+
+/* Option 5: Sunny Park */
+.alt-bg-5 {
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+}
+
+/* Option 6: Animated Background with Video-like Effect using CSS */
+.alt-bg-animated {
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+    animation: backgroundShift 30s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+    0%, 100% { 
+        background-position: center center;
+        transform: scale(1);
+    }
+    25% { 
+        background-position: center top;
+        transform: scale(1.05);
+    }
+    50% { 
+        background-position: center center;
+        transform: scale(1.02);
+    }
+    75% { 
+        background-position: center bottom;
+        transform: scale(1.05);
+    }
+}
+
+/* Alternative: Less green, more blue-green theme */
+.soft-theme {
+    --primary-color: #06b6d4; /* Cyan */
+    --secondary-color: #0891b2; /* Darker cyan */
+    --accent-color: #67e8f9; /* Light cyan */
+}
+
+/* Instructions to use:
+1. Choose one of the background options above
+2. Copy the background property from the chosen option
+3. Replace the background property in the main body selector in styles.css
+4. For the soft theme colors, add the CSS variables and update color references
+*/
