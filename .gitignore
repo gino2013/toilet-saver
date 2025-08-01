@@ -1,0 +1,29 @@
+# 依賴和建置檔案
+node_modules/
+dist/
+*.log
+
+# 開發工具
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# 環境變數
+.env
+.env.local
+.env.production
+
+# 暫存檔案
+*.tmp
+*.temp
+
+# SSL 憑證 (如果包含敏感資訊)
+# ssl/
+
+# Tweakcn 編輯器 (如果本地安裝)
+tweakcn-editor/

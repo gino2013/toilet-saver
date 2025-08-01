@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>廁所救星 | Toilet Saver</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="src/styles/globals.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: 'hsl(142 76% 36%)',
+                            foreground: 'hsl(355.7 100% 97.3%)',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 15s infinite linear',
+                        'floating-clouds': 'floating-clouds 60s infinite linear',
+                        'shimmer': 'shimmer 3s infinite',
+                    },
+                    keyframes: {
+                        'float': {
+                            '0%': { transform: 'translateY(-100px) rotate(0deg)', opacity: '0' },
+                            '10%': { opacity: '0.6' },
+                            '90%': { opacity: '0.6' },
+                            '100%': { transform: 'translateY(100vh) rotate(360deg)', opacity: '0' },
+                        },
+                        'floating-clouds': {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(0%)' },
+                        },
+                        'shimmer': {
+                            '0%': { transform: 'translateX(-100%) translateY(-100%) rotate(45deg)' },
+                            '100%': { transform: 'translateX(100%) translateY(100%) rotate(45deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 forest-path nature-overlay floating-clouds overflow-x-hidden">
+    <!-- Animated Background Elements -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1] overflow-hidden">
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 10%; animation-delay: 0s; animation-duration: 12s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 20%; animation-delay: 2s; animation-duration: 15s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 30%; animation-delay: 4s; animation-duration: 18s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 40%; animation-delay: 6s; animation-duration: 14s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 50%; animation-delay: 8s; animation-duration: 16s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 60%; animation-delay: 10s; animation-duration: 13s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 70%; animation-delay: 12s; animation-duration: 17s;"></div>
+        <div class="absolute w-2.5 h-2.5 bg-gradient-to-br from-green-600 to-green-400 rounded-tl-none rounded-tr-full rounded-bl-full rounded-br-none opacity-60 animate-float" style="left: 80%; animation-delay: 14s; animation-duration: 15s;"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-5">
+        <!-- Header -->
+        <header class="bg-white/10 backdrop-blur-md border-b border-white/20 shadow-lg sticky top-0 z-50 mb-8">
+            <div class="flex justify-between items-center py-4">
+                <h1 class="flex items-center gap-3 text-2xl font-bold text-white drop-shadow-lg">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 via-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
+                        <div class="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-r from-transparent via-white/30 to-transparent rotate-45 animate-shimmer"></div>
+                        <i class="fas fa-toilet text-white text-xl relative z-10"></i>
+                    </div>
+                    <span data-zh="廁所救星" data-en="Toilet Saver">廁所救星</span>
+                </h1>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <select id="backgroundSelect" class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2.5 rounded-full cursor-pointer font-medium hover:bg-white/30 transition-all duration-300 appearance-none pr-10 min-w-[140px]">
+                            <option value="forest-path" data-zh="森林小徑" data-en="Forest Path">森林小徑</option>
+                            <option value="mountain-lake" data-zh="山湖景色" data-en="Mountain Lake">山湖景色</option>
+                            <option value="soft-meadow" data-zh="柔和草地" data-en="Soft Meadow">柔和草地</option>
+                            <option value="misty-forest" data-zh="薄霧森林" data-en="Misty Forest">薄霧森林</option>
+                            <option value="sunny-park" data-zh="陽光公園" data-en="Sunny Park">陽光公園</option>
+                            <option value="animated-nature" data-zh="動態自然" data-en="Animated Nature">動態自然</option>
+                        </select>
+                        <i class="fas fa-image absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80 pointer-events-none"></i>
+                    </div>
+                    <button id="langToggle" class="flex items-center gap-2 bg-white/20 backdrop-blur-md text-white border border-white/30 px-4 py-2.5 rounded-full hover:bg-white/30 transition-all duration-300 font-medium">
+                        <i class="fas fa-globe"></i>
+                        <span>EN</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-10 mb-8 shadow-xl">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-white mb-8 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent" data-zh="找到最近的公廁" data-en="Find Nearest Public Toilets">找到最近的公廁</h2>
+                <div class="flex flex-col items-center gap-4">
+                    <button id="findNearby" class="inline-flex items-center gap-3 bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-500 hover:left-full"></div>
+                        <i class="fas fa-location-crosshairs relative z-10"></i>
+                        <span class="relative z-10" data-zh="使用我的位置" data-en="Use My Location">使用我的位置</span>
+                    </button>
+                    <div class="flex gap-3 w-full max-w-lg">
+                        <input type="text" id="searchInput" placeholder="輸入地址或地點..." data-placeholder-zh="輸入地址或地點..." data-placeholder-en="Enter address or location..." class="flex-1 px-6 py-4 border border-white/30 rounded-full bg-white/20 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:border-white/50 focus:bg-white/25 transition-all duration-300">
+                        <button id="searchBtn" class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-5 py-4 rounded-full hover:bg-white/30 transition-all duration-300">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <!-- Map Container -->
+            <div class="lg:col-span-2 relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden shadow-xl h-[600px]">
+                <div id="map" class="w-full h-full"></div>
+                <div class="absolute top-4 right-4 z-[1000]">
+                    <button id="recenterBtn" class="w-11 h-11 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all duration-300 shadow-lg" title="重新定位">
+                        <i class="fas fa-crosshairs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel">
+                <div class="results-header">
+                    <h3>
+                        <i class="fas fa-list"></i>
+                        <span data-zh="附近的公廁" data-en="Nearby Public Toilets">附近的公廁</span>
+                    </h3>
+                    <div class="results-count">
+                        <span id="resultsCount">0</span>
+                        <span data-zh="個結果" data-en="results">個結果</span>
+                    </div>
+                </div>
+                
+                <div class="mb-5">
+                    <div class="flex flex-col gap-2.5">
+                        <label class="flex items-center gap-2.5 cursor-pointer text-sm text-white/80 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/10">
+                            <input type="checkbox" id="accessibleFilter" class="w-4 h-4 accent-green-500 rounded">
+                            <span data-zh="無障礙設施" data-en="Wheelchair Accessible">無障礙設施</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 cursor-pointer text-sm text-white/80 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/10">
+                            <input type="checkbox" id="freeFilter" class="w-4 h-4 accent-green-500 rounded">
+                            <span data-zh="免費使用" data-en="Free to Use">免費使用</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 cursor-pointer text-sm text-white/80 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/10">
+                            <input type="checkbox" id="openNowFilter" class="w-4 h-4 accent-green-500 rounded">
+                            <span data-zh="現在開放" data-en="Open Now">現在開放</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="resultsList" class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                    <div class="flex flex-col items-center justify-center py-10 text-white/80 text-center">
+                        <i class="fas fa-spinner fa-spin text-3xl mb-4 bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent"></i>
+                        <span data-zh="正在搜尋附近的公廁..." data-en="Searching for nearby toilets...">正在搜尋附近的公廁...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[2000] hidden">
+            <div class="bg-white p-10 rounded-2xl text-center shadow-2xl">
+                <i class="fas fa-spinner fa-spin text-3xl text-blue-600 mb-4"></i>
+                <p class="text-gray-600" data-zh="正在取得您的位置..." data-en="Getting your location...">正在取得您的位置...</p>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[2000] hidden">
+            <div class="bg-white rounded-2xl max-w-md w-[90%] shadow-2xl overflow-hidden">
+                <div class="flex justify-between items-center p-6 border-b bg-gray-50">
+                    <h3 class="flex items-center gap-2.5 text-red-600 font-semibold text-lg">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span data-zh="錯誤" data-en="Error">錯誤</span>
+                    </h3>
+                    <button id="closeErrorModal" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-200 rounded-full transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <p id="errorMessage" class="text-gray-700"></p>
+                </div>
+                <div class="p-6 border-t bg-gray-50 text-right">
+                    <button id="errorOkBtn" class="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300" data-zh="確定" data-en="OK">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="src/scripts/script.js"></script>
+</body>
+</html>
